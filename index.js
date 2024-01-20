@@ -29,19 +29,19 @@ client.player = new Player(client, {
 
 let commands = []
 
-const slashFiles = fs.readdirSync("./slash").filter(file => file.endsWith(".js"))
+const slashFiles = fs.readdirSync("./SlashCommand").filter(file => file.endsWith(".js"))
 for (const file of slashFiles){
-    const slashcmd = require(`./slash/${file}`)
+    const slashcmd = require(`./SlashCommand/${file}`)
     client.slashcommands.set(slashcmd.data.name, slashcmd)
     if (LOAD_SLASH) commands.push(slashcmd.data.toJSON())
 }
 
 if (LOAD_SLASH) {
     const rest = new REST({ version: "9" }).setToken(TOKEN)
-    console.log("Deploying slash commands")
+    console.log("Update the command")
     rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {body: commands})
     .then(() => {
-        console.log("Successfully loaded")
+        console.log("Finished")
         process.exit(0)
     })
     .catch((err) => {
@@ -53,7 +53,7 @@ if (LOAD_SLASH) {
 }
 else {
     client.on("ready", () => {
-        console.log(`Logged in as ${client.user.tag}`)
+        console.log(`Bot online!! (${client.user.tag})`)
         client.user.setActivity(
             {
                 name: 'My beloved Tekmed',
@@ -76,3 +76,5 @@ else {
     })
     client.login(TOKEN)
 }
+//node index.js load to load command
+//node index.js to run bot
